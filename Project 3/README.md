@@ -1,29 +1,29 @@
 # Color Mixer
 
-An interactive RGB color mixing system developed to demonstrate **interrupt-driven architecture**, **PWM control**, **ADC input processing**, and **low-power design** on the MSP432P401R microcontroller.
+An interactive RGB color mixing system built to demonstrate interrupt-driven architecture, PWM control, ADC input processing, and low-power design on the MSP432P401R microcontroller.
 
 ## Overview
 
-Create custom colors by adjusting RGB values with a potentiometer and joystick. See your color displayed in real-time on both the LCD and a physical RGB LED using PWM. Features a sequence playback system to save and display your favorite color combinations.
+Create custom colors by adjusting RGB values with a potentiometer and joystick. Your color shows up in real-time on both the LCD and a physical RGB LED using PWM. There's also a sequence playback feature that lets you save and cycle through your favorite colors.
 
 ## Key Features
 
 ### Interrupt-Driven Design
-- **Timer_A interrupts**: Periodic ADC sampling without polling
-- **ADC14 interrupts**: Efficient analog conversion handling
-- **Low-power mode**: CPU sleeps between interrupts, waking only when needed
-- **Zero busy-wait**: All operations triggered by hardware events
+- Timer_A interrupts trigger periodic ADC sampling without polling
+- ADC14 interrupts handle analog conversion efficiently
+- Low-power mode keeps the CPU asleep between interrupts
+- No busy-waiting anywhere in the code
 
 ### PWM Color Control
-- **Dual Timer_A PWM**: Independent control of RGB channels
-- **0-100 value range**: User-friendly percentage-based adjustment
-- **Real-time preview**: LCD circle shows exact mixed color
-- **Physical LED output**: RGB LED displays created color
+- Two Timer_A modules generate PWM for all three RGB channels
+- Values range from 0-100 for easy percentage-based adjustment
+- LCD circle previews the exact mixed color
+- Physical RGB LED displays your creation
 
 ### Color Sequence Feature
-- **Save up to 10 colors**: Store favorite color combinations
-- **Playback mode**: Cycle through saved sequence automatically
-- **Visual feedback**: Both LCD and RGB LED show sequence
+- Save up to 10 colors to a sequence
+- Playback mode cycles through saved colors automatically
+- Both the LCD and RGB LED show the sequence
 
 ## System Architecture
 
@@ -81,7 +81,7 @@ Timer_A Overflow
   Return to LPM0
 ```
 
-## Technologies & Peripherals
+## Technologies Used
 
 | Component | Purpose |
 |-----------|---------|
@@ -106,7 +106,7 @@ Project 3/
     └── LED.c/h         # RGB LED PWM control
 ```
 
-### Key Implementation Highlights
+### Implementation Highlights
 
 **Interrupt-Driven ADC Sampling**:
 ```c
@@ -165,34 +165,23 @@ void setRGBColor(int r, int g, int b) {
 }
 ```
 
-## Technical Challenges & Solutions
+## Technical Challenges
 
-### Challenge: Coordinating Multiple Interrupts
-**Problem**: Timer and ADC interrupts must work together without race conditions or missed samples.
-**Solution**: Used Timer_A overflow to trigger ADC conversion, and ADC completion interrupt to signal main loop. Clear separation of responsibilities prevents conflicts.
+### Coordinating Multiple Interrupts
+Timer and ADC interrupts need to work together without race conditions or missed samples. I set up Timer_A overflow to trigger ADC conversion, then the ADC completion interrupt signals the main loop. Keeping responsibilities separate prevents conflicts.
 
-### Challenge: Smooth PWM Color Transitions
-**Problem**: Direct value changes cause visible stepping/flickering in LED output.
-**Solution**: Used high PWM frequency (above visible flicker threshold) and ensured atomic updates to all three channels simultaneously.
+### Smooth PWM Color Transitions
+Direct value changes can cause visible stepping or flickering in the LED. Using a high PWM frequency (above the visible flicker threshold) and updating all three channels at the same time keeps transitions smooth.
 
-### Challenge: Power Efficiency
-**Problem**: Continuous polling wastes power and generates heat in battery-powered applications.
-**Solution**: Implemented true interrupt-driven architecture with LPM0 sleep. CPU only wakes for actual work, reducing average current consumption significantly.
+### Power Efficiency
+Continuous polling wastes power and generates heat, which matters for battery-powered applications. The interrupt-driven architecture with LPM0 sleep means the CPU only wakes up when there's actual work to do, cutting average current consumption significantly.
 
-### Challenge: ADC Noise Filtering
-**Problem**: Raw potentiometer readings fluctuate due to electrical noise.
-**Solution**: Applied software averaging over multiple samples and added hysteresis to prevent value oscillation at boundaries.
+### ADC Noise Filtering
+Raw potentiometer readings jump around due to electrical noise. I added software averaging over multiple samples and hysteresis to stop values from oscillating at the boundaries.
 
 ## Demo
 
 *Screenshots and demo video coming soon*
-
-<!--
-TODO: Add media
-![Color Mixer UI](./media/mixer_ui.png)
-![RGB LED Output](./media/rgb_led.jpg)
-![Sequence Playback](./media/sequence.gif)
--->
 
 ## Controls
 
@@ -204,11 +193,11 @@ TODO: Add media
 | Button 1 | Save color to sequence |
 | Button 2 | Play/Stop sequence playback |
 
-## Building & Running
+## Building and Running
 
 1. Open project in Code Composer Studio
 2. Connect MSP432 LaunchPad with BoosterPack MKII
-3. Ensure potentiometer is connected to P4.7
+3. Make sure potentiometer is connected to P4.7
 4. Build and flash to device
 5. Use potentiometer to adjust color values
 6. Watch real-time preview on LCD and RGB LED
@@ -216,7 +205,7 @@ TODO: Add media
 
 ## Power Consumption
 
-This project demonstrates embedded low-power design principles:
+This project shows embedded low-power design in action:
 
 | Mode | Description |
 |------|-------------|
@@ -224,4 +213,4 @@ This project demonstrates embedded low-power design principles:
 | **LPM0** | CPU sleeping, peripherals active |
 | **Wake Sources** | Timer_A overflow, ADC completion |
 
-The architecture ensures the CPU spends the majority of time in low-power mode, waking only briefly to process new readings.
+The design keeps the CPU in low-power mode most of the time, only waking briefly to handle new readings.

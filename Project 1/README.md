@@ -1,30 +1,31 @@
 # Maze Game
 
-A terminal-based maze navigation game developed to demonstrate **UART serial communication**, **finite state machine design**, and **real-time embedded systems programming** on the MSP432P401R microcontroller.
+A terminal-based maze navigation game built to demonstrate UART serial communication, finite state machine design, and real-time embedded systems programming on the MSP432P401R microcontroller.
 
 ## Overview
 
-Navigate through a procedurally-drawn maze while avoiding an enemy AI that hunts you down. The game features real-time serial communication with a terminal emulator, visual feedback through LCD graphics, and a persistent high score system.
+The player navigates through a maze while avoiding an enemy that hunts them down. The game uses real-time serial communication with a terminal emulator, displays visual feedback on an LCD, and tracks high scores.
 
 ## Key Features
 
 ### Serial Communication
-- **Multi-baud rate support**: 9600, 19200, 38400, and 57600 bps with visual LED indicators
-- **Bidirectional UART**: Receives player commands, transmits game prompts and status
-- **Input validation**: Robust handling of valid/invalid commands with user feedback
+- Supports multiple baud rates: 9600, 19200, 38400, and 57600 bps
+- Visual LED indicators show the current baud rate
+- Bidirectional UART receives player commands and transmits game prompts
+- Handles both valid and invalid input with appropriate feedback
 
 ### Game Mechanics
-- **10x10 maze navigation** with wall collision detection
-- **Enemy AI** with randomized movement patterns that tracks the player
-- **Win/lose conditions**: Reach the goal to win, collide with the enemy to lose
-- **Move counter**: Tracks efficiency—lower moves = better score
-- **High score persistence**: Top 5 scores saved and sorted
+- 10x10 maze with wall collision detection
+- Enemy AI with randomized movement that tracks the player
+- Win by reaching the goal, lose by colliding with the enemy
+- Move counter tracks efficiency (lower is better)
+- Top 5 high scores saved and sorted
 
 ### User Interface
-- **LCD maze visualization**: Real-time rendering of maze, player, and enemy positions
-- **Menu system**: Main menu, instructions, high scores, and game screens
-- **Joystick navigation**: Intuitive menu selection with visual cursor feedback
-- **LED status indicators**: Baud rate confirmation through colored LED patterns
+- Real-time LCD rendering of the maze, player, and enemy
+- Menu system with main menu, instructions, high scores, and game screens
+- Joystick navigation for menu selection
+- LED patterns confirm baud rate settings
 
 ## System Architecture
 
@@ -46,7 +47,7 @@ Navigate through a procedurally-drawn maze while avoiding an enemy AI that hunts
 └─────────────────┘
 ```
 
-### State Machine Design
+### State Machine
 
 ```
 MAIN_MENU ──────► SEE_INSTRUCTIONS ──────┐
@@ -67,7 +68,7 @@ MAIN_MENU ──────► SEE_INSTRUCTIONS ──────┐
               MAIN_MENU ◄─────────────────┘
 ```
 
-## Technologies & Peripherals
+## Technologies Used
 
 | Component | Purpose |
 |-----------|---------|
@@ -91,9 +92,9 @@ Project 1/
     └── UART.c/h        # Serial communication driver
 ```
 
-### Key Implementation Highlights
+### Implementation Highlights
 
-**Non-Blocking Architecture**: The main loop continuously polls for input without blocking, ensuring responsive gameplay:
+**Non-Blocking Architecture**: The main loop polls for input without blocking, keeping gameplay responsive:
 ```c
 void Application_loop(Application* app, HAL* hal) {
     // Non-blocking UART check
@@ -106,7 +107,7 @@ void Application_loop(Application* app, HAL* hal) {
 }
 ```
 
-**Maze Collision Detection**: Validates moves against wall positions before updating player location:
+**Maze Collision Detection**: Validates moves against wall positions before updating the player location:
 ```c
 bool isValidMove(Application* app, GFX* gfx, int new_x, int new_y) {
     // Boundary and wall collision checks
@@ -114,29 +115,20 @@ bool isValidMove(Application* app, GFX* gfx, int new_x, int new_y) {
 }
 ```
 
-## Technical Challenges & Solutions
+## Technical Challenges
 
-### Challenge: Baud Rate Synchronization
-**Problem**: Terminal and MCU must use matching baud rates for reliable communication.
-**Solution**: Implemented visual LED feedback system—each baud rate displays a unique LED color pattern, allowing users to verify settings at a glance.
+### Baud Rate Synchronization
+The terminal and MCU need matching baud rates for reliable communication. I implemented a visual LED feedback system where each baud rate displays a unique color pattern so users can verify their settings at a glance.
 
-### Challenge: Enemy AI Movement
-**Problem**: Creating engaging enemy behavior without complex pathfinding on limited resources.
-**Solution**: Implemented randomized movement with basic player-tracking tendency, creating unpredictable but challenging gameplay.
+### Enemy AI Movement
+Creating engaging enemy behavior without complex pathfinding on limited resources was tricky. I went with randomized movement that has a tendency to track the player, which creates unpredictable but challenging gameplay.
 
-### Challenge: Non-Blocking Game Loop
-**Problem**: UART reads can block execution, causing missed inputs or unresponsive UI.
-**Solution**: Used `UART_hasChar()` polling pattern to check for available data without blocking, maintaining smooth 60Hz+ update rates.
+### Non-Blocking Game Loop
+UART reads can block execution and cause missed inputs or unresponsive UI. Using a `UART_hasChar()` polling pattern to check for data without blocking keeps the game running smoothly.
 
 ## Demo
 
 *Screenshots and gameplay video coming soon*
-
-<!--
-TODO: Add media
-![Main Menu](./media/main_menu.png)
-![Gameplay](./media/gameplay.gif)
--->
 
 ## Controls
 
@@ -149,11 +141,11 @@ TODO: Add media
 | Joystick | Menu navigation |
 | Button | Menu selection |
 
-## Building & Running
+## Building and Running
 
 1. Open project in Code Composer Studio
 2. Connect MSP432 LaunchPad with BoosterPack
 3. Build and flash to device
 4. Open terminal emulator (PuTTY, Tera Term, etc.)
-5. Configure serial port: Select matching baud rate, 8N1
+5. Configure serial port with matching baud rate, 8N1
 6. Navigate menu with joystick, play game via terminal commands

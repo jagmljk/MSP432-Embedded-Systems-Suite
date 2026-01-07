@@ -1,30 +1,30 @@
 # Color Jump
 
-An infinite runner game developed to demonstrate **real-time graphics programming**, **analog input processing**, and **game physics implementation** on the MSP432P401R microcontroller.
+An infinite runner game built to demonstrate real-time graphics programming, analog input processing, and game physics on the MSP432P401R microcontroller.
 
 ## Overview
 
-Jump over scrolling colored floor segments by matching your character's color. Use the joystick to swap colors in real-time through an intuitive color wheel system. Features multiple difficulty modes and persistent high score tracking.
+Jump over scrolling colored floor segments by matching your character's color to the floor. Use the joystick to swap colors through an intuitive color wheel system. The game features multiple difficulty modes and keeps track of high scores.
 
 ## Key Features
 
 ### Color Wheel Mechanic
-- **5-color selection system**: Center color + 4 directional swaps
-- **Joystick-driven swapping**: Push in any direction to instantly change color
-- **Visual feedback**: On-screen color wheel shows available options
-- **Strategic gameplay**: Plan color switches to survive longer runs
+- 5-color selection system with a center color and 4 directional swaps
+- Push the joystick in any direction to instantly change your color
+- On-screen color wheel shows what colors are available
+- Adds a layer of strategy as you plan your color switches
 
 ### Dynamic Difficulty
-- **Easy Mode**: Slower scroll speed, 1 point per second
-- **Hard Mode**: Faster scroll speed, 3 points per second
-- **Increasing Mode**: Difficulty ramps up as score increases
-- **Configurable settings**: Options menu for difficulty selection
+- Easy Mode: Slower scroll speed, 1 point per second
+- Hard Mode: Faster scroll speed, 3 points per second
+- Increasing Mode: Difficulty ramps up as your score grows
+- Configurable through the options menu
 
 ### Game Mechanics
-- **Smooth jump physics**: Gravity-based jumping with apex detection
-- **Floor collision system**: Color matching determines survival
-- **Falling death**: Miss the floor entirely and fall to game over
-- **Endless gameplay**: Procedurally generated floor segments
+- Smooth gravity-based jump physics
+- Floor collision system where color matching determines survival
+- Fall off the floor and it's game over
+- Procedurally generated floor segments for endless gameplay
 
 ## System Architecture
 
@@ -51,7 +51,7 @@ Jump over scrolling colored floor segments by matching your character's color. U
       └─────────┘     └─────────┘     └─────────┘
 ```
 
-### State Machine Design
+### State Machine
 
 ```
 STATE_TITLE ──► STATE_MENU
@@ -71,7 +71,7 @@ STATE_TITLE ──► STATE_MENU
               STATE_MENU
 ```
 
-## Technologies & Peripherals
+## Technologies Used
 
 | Component | Purpose |
 |-----------|---------|
@@ -94,9 +94,9 @@ Project 2/
     └── Joystick.c/h    # ADC-based joystick driver
 ```
 
-### Key Implementation Highlights
+### Implementation Highlights
 
-**Color Wheel System**: Efficient 5-way color selection using joystick direction:
+**Color Wheel System**: The joystick controls a 5-way color selection:
 ```c
 typedef struct {
     int center;  // Current active color
@@ -117,7 +117,7 @@ void updateColorWheel(Application* app, HAL* hal) {
 }
 ```
 
-**Jump Physics**: Smooth arc with configurable height and timing:
+**Jump Physics**: Smooth arc movement with configurable height:
 ```c
 void updateCharacter(Application* app, HAL* hal) {
     if (app->jumpState == JUMP_UP) {
@@ -131,7 +131,7 @@ void updateCharacter(Application* app, HAL* hal) {
 }
 ```
 
-**Floor Segment Generation**: Procedural colored floor with randomization:
+**Floor Segment Generation**: Procedurally generated colored floor:
 ```c
 typedef struct {
     int x;       // Horizontal position
@@ -146,19 +146,16 @@ void updateFloor(Application* app) {
 }
 ```
 
-## Technical Challenges & Solutions
+## Technical Challenges
 
-### Challenge: Smooth Graphics at High Frame Rate
-**Problem**: Redrawing entire screen causes visible flicker and tears.
-**Solution**: Implemented differential rendering—only redraw changed pixels. Track previous positions and use background-color overdraw for moving objects.
+### Smooth Graphics at High Frame Rate
+Redrawing the entire screen causes visible flicker. I used differential rendering, which only redraws pixels that changed. By tracking previous positions and using background-color overdraw for moving objects, the display stays smooth.
 
-### Challenge: Responsive Joystick Input
-**Problem**: ADC noise causes jittery or false direction readings.
-**Solution**: Added dead zone around center position and debounce timing. Require sustained direction for color swap to prevent accidental changes.
+### Responsive Joystick Input
+ADC noise can cause jittery or false direction readings. I added a dead zone around the center position and debounce timing. The joystick needs to be held in a direction briefly before the color swap registers, which prevents accidental changes.
 
-### Challenge: Synchronized Timing Systems
-**Problem**: Multiple timers (jump, score, floor scroll) must run independently but stay synchronized.
-**Solution**: Used software timer abstraction with independent tick counters. Each system checks its own timer without blocking others:
+### Synchronized Timing Systems
+Multiple timers (jump, score, floor scroll) need to run independently but stay in sync. I built a software timer abstraction with independent tick counters so each system can check its own timer without blocking the others:
 ```c
 if (SWTimer_expired(&app->jumpTimer)) {
     updateCharacter(app, hal);
@@ -166,20 +163,12 @@ if (SWTimer_expired(&app->jumpTimer)) {
 }
 ```
 
-### Challenge: Color Matching Collision
-**Problem**: Determining if player color matches floor segment during overlap.
-**Solution**: Check collision at player's X position against floor segment array. Compare center color values and trigger game over on mismatch.
+### Color Matching Collision
+Figuring out if the player's color matches the floor during overlap took some work. The solution checks the player's X position against the floor segment array and compares center color values, triggering game over on a mismatch.
 
 ## Demo
 
 *Screenshots and gameplay video coming soon*
-
-<!--
-TODO: Add media
-![Title Screen](./media/title.png)
-![Gameplay](./media/gameplay.gif)
-![Color Wheel](./media/colorwheel.png)
--->
 
 ## Controls
 
@@ -192,7 +181,7 @@ TODO: Add media
 | Button 1 | Jump |
 | Button 2 | Menu select / Pause |
 
-## Building & Running
+## Building and Running
 
 1. Open project in Code Composer Studio
 2. Connect MSP432 LaunchPad with BoosterPack MKII

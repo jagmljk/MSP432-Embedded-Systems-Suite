@@ -1,10 +1,10 @@
 # Embedded Systems Portfolio
 
-A collection of embedded systems projects developed on the **Texas Instruments MSP432P401R** microcontroller platform. These projects demonstrate proficiency in low-level hardware programming, real-time systems design, and hardware-software integration.
+A collection of embedded systems projects built on the Texas Instruments MSP432P401R microcontroller. These projects showcase skills in low-level hardware programming, real-time systems, and hardware-software integration.
 
 ## About
 
-I'm an embedded systems developer with hands-on experience in microcontroller programming, peripheral interfacing, and real-time application development. This portfolio showcases my ability to design and implement complete embedded solutions—from hardware abstraction layers to interactive user applications.
+I'm an embedded systems developer with hands-on experience in microcontroller programming, peripheral interfacing, and real-time application development. This portfolio demonstrates my ability to design and implement complete embedded solutions, from hardware abstraction layers to interactive user applications.
 
 ## Projects
 
@@ -22,19 +22,19 @@ I'm an embedded systems developer with hands-on experience in microcontroller pr
 - **Input**: Analog joystick, pushbuttons, potentiometer
 - **Output**: RGB LED, Boosterpack LEDs
 
-### Peripherals & Protocols
-- **UART** - Serial communication with configurable baud rates (9600-57600)
-- **SPI** - High-speed LCD graphics rendering
-- **ADC** - 14-bit analog-to-digital conversion for joystick and potentiometer input
-- **PWM** - Pulse-width modulation for RGB LED color control
-- **GPIO** - Digital I/O for buttons and status LEDs
-- **Timers** - Hardware timers for game loops, debouncing, and time-based events
+### Peripherals and Protocols
+- **UART**: Serial communication with configurable baud rates (9600-57600)
+- **SPI**: High-speed LCD graphics rendering
+- **ADC**: 14-bit analog-to-digital conversion for joystick and potentiometer input
+- **PWM**: Pulse-width modulation for RGB LED color control
+- **GPIO**: Digital I/O for buttons and status LEDs
+- **Timers**: Hardware timers for game loops, debouncing, and time-based events
 
 ### Software Architecture
-- **Hardware Abstraction Layer (HAL)** - Modular driver architecture for portable, maintainable code
-- **Finite State Machines** - Structured application flow and game state management
-- **Interrupt-Driven Design** - Efficient event handling with low-power mode support
-- **Non-Blocking Operations** - Responsive systems without busy-wait delays
+- **Hardware Abstraction Layer (HAL)**: Modular driver architecture for portable, maintainable code
+- **Finite State Machines**: Structured application flow and game state management
+- **Interrupt-Driven Design**: Efficient event handling with low-power mode support
+- **Non-Blocking Operations**: Responsive systems without busy-wait delays
 
 ## Skills Demonstrated
 
@@ -57,7 +57,7 @@ I'm an embedded systems developer with hands-on experience in microcontroller pr
 
 ## Getting Started
 
-Each project is self-contained with its own build configuration. Projects were developed using **Code Composer Studio** with the MSP432 DriverLib.
+Each project is self-contained with its own build configuration. Projects were developed using Code Composer Studio with the MSP432 DriverLib.
 
 ### Prerequisites
 - Texas Instruments MSP432P401R LaunchPad
